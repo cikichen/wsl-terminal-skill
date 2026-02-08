@@ -1,5 +1,5 @@
 ---
-name: wsl-terminal-priority
+name: wsl-shell-reliability
 description: Reliability-first shell selection policy for AI agents on Windows. Choose WSL or PowerShell based on execution risk, not preference.
 license: MIT
 compatibility: Windows (WSL optional; recommended for POSIX-fragile workflows)
@@ -8,7 +8,7 @@ metadata:
   version: "2.0"
 ---
 
-# WSL Terminal Priority
+# WSL Shell Reliability
 
 Use this skill to maximize terminal command success on Windows.
 

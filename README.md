@@ -1,4 +1,4 @@
-# wsl-terminal-priority
+# wsl-shell-reliability
 
 Reliability-first shell selection skill for AI agents on Windows.
 
@@ -9,9 +9,9 @@ Core principle:
 
 ## Project layout
 
-- `SKILL.md`: normative policy used by the agent.
-- `references/REFERENCE.md`: deeper reliability notes and fallback contract.
-- `references/SCENARIOS.md`: practical examples and shell-choice patterns.
+- `wsl-shell-reliability/SKILL.md`: normative policy used by the agent.
+- `wsl-shell-reliability/references/REFERENCE.md`: deeper reliability notes.
+- `wsl-shell-reliability/references/SCENARIOS.md`: shell-choice examples.
 
 ## Intended outcomes
 
