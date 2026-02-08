@@ -6,7 +6,10 @@
 
 ```text
 skills/
-  SKILL.md
+  wsl-terminal-priority/
+    SKILL.md              # 核心 skill（含 YAML frontmatter）
+    references/
+      REFERENCE.md        # 详细跨边界参考
 ```
 
 ## 功能说明
@@ -19,7 +22,10 @@ skills/
 
 ## 使用方式
 
-将本仓库（或 `skills/SKILL.md`）放到你的 skill 加载器期望的目录下即可。
+将 `skills/wsl-terminal-priority/` 复制到你的 skill 加载器搜索路径下：
+- OpenCode: `.opencode/skills/wsl-terminal-priority/SKILL.md`
+- Claude Code: `.claude/skills/wsl-terminal-priority/SKILL.md`
+- Cursor: `.cursor/skills/wsl-terminal-priority/SKILL.md`
 
 ## 许可证
 
