@@ -36,6 +36,28 @@ The following scenarios must run in native Windows shell directly:
    - Use Windows-native shell as fallback.
 4. Keep paths and quoting safe when crossing Windows/WSL boundaries.
 
+## Multiple WSL distributions
+- Default: use the system default WSL distribution (`wsl.exe` without `-d`).
+- If a specific distro is needed, use `wsl.exe -d <distro> -e bash ...`.
+- When unsure which distro is default, check with `wsl.exe -l -v` first.
+- Do not assume distro name; verify before hardcoding.
+
+## Timeout handling
+- Long-running commands (e.g., `apt-get update`, large builds) may exceed tool timeout limits.
+- For potentially slow operations:
+  - Set an explicit timeout if the tool supports it.
+  - Split into smaller steps when possible (e.g., update and install separately).
+  - If a command times out, check whether it partially completed before retrying.
+- Never silently retry a timed-out command that may have side effects (e.g., partial install).
+
+## Sudo strategy
+- In non-interactive environments, `sudo` may hang waiting for password input.
+- Prefer `sudo -n` (non-interactive) to fail fast instead of hanging.
+- If `sudo` is required and password is needed:
+  - Stop and inform the user that manual intervention is required.
+  - Do not attempt to pipe or echo passwords.
+- For package installs, prefer Homebrew (no sudo needed) over `apt` (sudo needed) when possible.
+
 ## Execution policy
 - Prefer invoking commands through WSL, e.g.:
   - `wsl.exe -e bash -lc "<command>"`
