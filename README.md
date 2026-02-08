@@ -1,33 +1,20 @@
-# wsl-terminal-skill
+# wsl-terminal-priority
 
-[中文说明](README_CN.md)
+Reliability-first shell selection skill for AI agents on Windows.
 
-WSL-first terminal execution skill for Windows environments.
+Core principle:
 
-## Structure
+- Do **not** force WSL.
+- Choose WSL or PowerShell based on failure risk and task semantics.
 
-```text
-skills/
-  wsl-terminal-priority/
-    SKILL.md              # Core skill (with YAML frontmatter)
-    references/
-      REFERENCE.md        # Detailed cross-boundary reference
-```
+## Project layout
 
-## What this skill does
+- `SKILL.md`: normative policy used by the agent.
+- `references/REFERENCE.md`: deeper reliability notes and fallback contract.
+- `references/SCENARIOS.md`: practical examples and shell-choice patterns.
 
-- On Windows, terminal commands should run in WSL first.
-- Windows-only tools (winget, scoop, PowerShell cmdlets, etc.) run natively.
-- Homebrew/Linuxbrew preferred over apt for CLI tools.
-- If WSL is unavailable, fallback to PowerShell/CMD with explicit explanation.
+## Intended outcomes
 
-## Usage
-
-Copy `skills/wsl-terminal-priority/` into your skill loader's search path:
-- OpenCode: `.opencode/skills/wsl-terminal-priority/SKILL.md`
-- Claude Code: `.claude/skills/wsl-terminal-priority/SKILL.md`
-- Cursor: `.cursor/skills/wsl-terminal-priority/SKILL.md`
-
-## License
-
-[MIT](LICENSE)
+- Fewer command failures from shell mismatch.
+- Predictable fallback behavior.
+- Better parity with task-native environments.
