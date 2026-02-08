@@ -22,6 +22,14 @@ On Windows, always prefer running command-line operations in **WSL** first. Fall
 - For repository work, ensure the working directory maps correctly in WSL before running commands.
 - Do not silently switch to PowerShell/CMD if WSL fails; state the reason.
 
+## Package manager / toolchain preference
+- If Homebrew (Linuxbrew) exists in WSL, prefer it first for CLI tools.
+- Prefer `brew`-installed binaries over system binaries when both are available.
+- If `brew` is not in PATH but Linuxbrew exists, use absolute path binaries when needed:
+  - `/home/linuxbrew/.linuxbrew/bin/<tool>`
+- Only fall back to `apt` (or other package managers) when Brew is unavailable or the package is not provided by Brew.
+- Keep behavior explicit: when switching from Brew to fallback, state the reason.
+
 ## Communication requirements
 - Before first terminal use in a task, mention that WSL is being used by default on Windows.
 - If fallback is required, state:
@@ -33,6 +41,7 @@ On Windows, always prefer running command-line operations in **WSL** first. Fall
 - Do **not** change user intent or command semantics while switching shells.
 - Do **not** introduce extra dependencies just to enforce WSL.
 - Keep command output handling consistent with normal workflow.
+- Do **not** force-install tools with `apt` if equivalent Brew tool is already available.
 
 ## Example decision flow
 1. Need to run terminal command on Windows.
