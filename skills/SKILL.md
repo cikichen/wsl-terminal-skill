@@ -85,17 +85,12 @@ The following scenarios must run in native Windows shell directly:
 3. If still missing, use fallback package manager (`apt` etc.) with explicit reason
 
 ## GitHub CLI note
-- `gh` may be installed via Linuxbrew but not exported in PATH.
-- In that case, run:
-  - `/home/linuxbrew/.linuxbrew/bin/gh <args>`
+- `gh` may only exist at `/home/linuxbrew/.linuxbrew/bin/gh` if installed via Brew but not in PATH.
 
 ## Path translation
-- Windows `D:\workspace\project` → WSL `/mnt/d/workspace/project`
-- General rule: `<Drive>:\path\to\dir` → `/mnt/<drive_lowercase>/path/to/dir`
-- Use forward slashes in WSL; backslashes will break commands.
-- When passing paths from Windows context into WSL commands, always translate first.
-- When passing paths from WSL back to Windows tools, reverse-translate.
-- Paths with spaces must be quoted on both sides of the boundary.
+- `D:\workspace\project` → `/mnt/d/workspace/project` (drive letter lowercase).
+- Use forward slashes in WSL. Paths with spaces must be quoted on both sides.
+- Translate direction: Windows→WSL before invoking; WSL→Windows before returning to Windows tools.
 
 ## Cross-boundary considerations
 
@@ -118,15 +113,39 @@ The following scenarios must run in native Windows shell directly:
 
 ### Mixed scenarios
 - **Git in WSL + VS Code on Windows**: Use `code .` from WSL (VS Code Remote - WSL handles this).
-- **Docker**: If Docker Desktop is installed, `docker` may be available in both WSL and Windows. Prefer the WSL-side `docker` CLI to avoid path issues.
-- **Node/Python projects**: Run dev servers in WSL; access via `localhost` from Windows browser (WSL2 networking forwards automatically).
+- **Docker**: Prefer WSL-side `docker` CLI over `docker.exe` to avoid path issues.
+- **Node/Python projects**: Run dev servers in WSL; access via `localhost` from Windows browser.
+
+### DNS resolution (WSL2 common issue)
+- VPN/proxy may break DNS in WSL2 (`Temporary failure in name resolution`).
+- Quick fix: `echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf`.
+- Persistent fix: in `/etc/wsl.conf` set `[network] generateResolvConf=false`, then manually set `/etc/resolv.conf`.
+- If DNS fails, diagnose before assuming network is down.
+
+### File system performance
+- `/mnt/` (Windows drives) is **10-100x slower** than WSL-native filesystem for I/O-heavy operations.
+- For performance-sensitive work (large builds, `node_modules`, git operations on big repos), prefer storing projects in `~/projects/` inside WSL.
+- Use `/mnt/` only for cross-OS file sharing, not as primary workspace.
+
+### Git credential sharing
+- To share Windows Git credentials with WSL, configure:
+  - `git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/bin/git-credential-manager.exe"`
+- SSH keys: keep in WSL-native `~/.ssh/` (not `/mnt/`), or use Windows SSH agent forwarding.
+
+### WSL configuration files
+- **`.wslconfig`** (Windows-side, `%USERPROFILE%\.wslconfig`): controls memory limit, swap, processors, networking mode.
+- **`wsl.conf`** (per-distro, `/etc/wsl.conf`): controls automount, network, interop, boot commands.
+- Key settings: `[interop] appendWindowsPath=false` to stop Windows PATH leakage; `[network] generateResolvConf=false` for custom DNS.
+
+### Networking (WSL2)
+- Default: NAT mode. WSL2 has its own virtual network adapter.
+- `localhost` forwarding from Windows to WSL2 works automatically for most cases.
+- Mirrored networking mode (newer feature): shares host network stack. Enable in `.wslconfig` with `[wsl2] networkingMode=mirrored`.
+- If port forwarding fails, check Windows firewall rules.
 
 ## Communication requirements
-- Before first terminal use in a task, mention that WSL is being used by default on Windows.
-- If fallback is required, state:
-  - What failed in WSL
-  - What fallback shell is used
-  - Any behavior differences that may affect results
+- Mention WSL is being used before first terminal command in a task.
+- On fallback: state what failed, which shell is used instead, and any behavior differences.
 
 ## Fallback boundary
 - Fallback to PowerShell/CMD is allowed only when:
