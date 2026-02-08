@@ -1,5 +1,7 @@
 # wsl-terminal-skill
 
+[中文说明](README_CN.md)
+
 WSL-first terminal execution skill for Windows environments.
 
 ## Structure
@@ -18,3 +20,7 @@ skills/
 ## Usage
 
 Place this repository (or `skills/SKILL.md`) where your skill loader expects skills.
+
+## License
+
+[MIT](LICENSE)
